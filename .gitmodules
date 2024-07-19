@@ -1,0 +1,3 @@
+[submodule "laravel-breeze-react"]
+	path = laravel-breeze-react
+	url = https://github.com/Nilanth/laravel-breeze-react.git
