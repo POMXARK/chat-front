@@ -32,9 +32,14 @@ export const useAuth = ({middleware, redirectIfAuthenticated} = {}) => {
     await csrf()
     setErrors([])
     axios
-      .post('/register', props)
-      .then(() => mutate())
+      .post(import.meta.env.VITE_APP_BACKEND_URL_API + '/register', props)
+      .then((response) => {
+            mutate()
+            localStorage.setItem('token', response.data.token)
+            localStorage.setItem('userId', response.data.user.userId)
+      })
       .catch(error => {
+        console.log(error)
         if (error.response.status !== 422) throw error
         setErrors(Object.values(error.response.data.errors).flat())
       })
@@ -54,12 +59,32 @@ export const useAuth = ({middleware, redirectIfAuthenticated} = {}) => {
         localStorage.setItem('userId', response.data.user.userId)
         console.log(localStorage)
         mutate()
-        // window.location.reload()
+        window.location.reload()
       })
       .catch(error => {
         if (error.response.status !== 422) throw error
         setErrors(Object.values(error.response.data.errors).flat())
       })
+  }
+
+  const invite = async ({setErrors, setStatus, ...props}) => {
+    await csrf()
+    setErrors([])
+    setStatus(null)
+
+
+    axios
+        .post(import.meta.env.VITE_APP_BACKEND_URL_API + '/chats', {...props}, {headers})
+        .then((response) => {
+          console.log('data', response.data)
+          console.log(localStorage)
+          mutate()
+          window.location.reload()
+        })
+        .catch(error => {
+          if (error.response.status !== 422) throw error
+          setErrors(Object.values(error.response.data.errors).flat())
+        })
   }
 
   const forgotPassword = async ({setErrors, setStatus, email}) => {
@@ -115,6 +140,7 @@ export const useAuth = ({middleware, redirectIfAuthenticated} = {}) => {
     user,
     register,
     login,
+    invite,
     forgotPassword,
     resetPassword,
     resendEmailVerification,

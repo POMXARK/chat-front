@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import axios from 'axios'
 
-const MessageInput = ({ rootUrl }) => {
+const MessageInput = ({ rootUrl, chatId }) => {
     const [message, setMessage] = useState("");
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem('token') };
     const messageRequest = async (text) => {
         try {
             console.log(text)
-            await axios.post(`${rootUrl}/message`, {
+            await axios.post(`${rootUrl}/message/${chatId}`, {
                 text: text,
             }, {headers}).catch(error => {
                 console.log(error);
                 console.log(error.response);
                 console.log(error.response.data.message);
             });
+            // window.location.reload()
         } catch (err) {
             console.log(err.message);
         }

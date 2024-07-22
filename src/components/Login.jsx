@@ -90,6 +90,12 @@ const Login = () => {
             >
                 Forgot your password?
             </NavLink>
+            <NavLink
+                to="/register"
+                className="pl-3 underline text-sm text-gray-600 hover:text-gray-900"
+            >
+              Not registered?
+            </NavLink>
             <Button className="ml-3">
                 Login
             </Button>
